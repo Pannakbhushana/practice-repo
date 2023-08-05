@@ -1,0 +1,22 @@
+{
+    "students": [
+        {
+            "name": "Rahul Mishra",
+            "age": "28"
+        }
+    ],
+    "teachers": [
+        {
+            "name": "Pulkit Tyagi",
+            "Age": 32
+        },
+        {
+            "name": "Swananda Kadam",
+            "Age": 27
+        },
+        {
+            "name": "Manish Kumar",
+            "age": "34"
+        }
+    ]
+}

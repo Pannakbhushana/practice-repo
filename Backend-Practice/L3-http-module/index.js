@@ -27,6 +27,18 @@ const server=http.createServer((req,res)=>{
        res.end()
     }
 
+    else if(req.url=='/new' && req.method=='POST'){
+        let str="";
+
+        req.on("data",(chunk)=>{
+            str+=chunk;
+        })
+        req.on("end",()=>{
+            console.log(str);
+        })
+        res.end("Data sent");
+    }
+
 
     else if(req.url=='/bloga'){
         res.end("Blog page")

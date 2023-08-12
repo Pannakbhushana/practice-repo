@@ -1,0 +1,9 @@
+client visited /about at 1691473824809
+client visited / at 1691473831784
+client visited / at Tue Aug 08 2023 11:21:07 GMT+0530 (India Standard Time)
+client visited / at Tue Aug 08 2023 12:01:12 GMT+0530 (India Standard Time)
+client visited /student at Tue Aug 08 2023 12:05:57 GMT+0530 (India Standard Time)
+client visited /student/about at Tue Aug 08 2023 12:06:03 GMT+0530 (India Standard Time)
+client visited /student/about at Tue Aug 08 2023 12:06:32 GMT+0530 (India Standard Time)
+client visited /teacher at Tue Aug 08 2023 12:06:46 GMT+0530 (India Standard Time)
+client visited /teacher/about at Tue Aug 08 2023 12:06:57 GMT+0530 (India Standard Time)

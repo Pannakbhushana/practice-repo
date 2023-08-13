@@ -1,9 +1,8 @@
 const express=require("express");
 const {connection}=require("./db.js");
 const {UserModel}=require("./db.js");
-
 const app=express();
-
+require("dotenv").config()
 
 app.use(express.json());
 
@@ -58,12 +57,12 @@ app.patch("/update/:userID",async(req,res)=>{
 
 
 
-app.listen("3030",async()=>{
+app.listen(process.env.port,async()=>{
     try {
         await connection;
         console.log("connected to data base");
     } catch (error) {
         console.log(error.message);
     }
-    console.log("app is running at port 3030");
+    console.log(`app is running at port ${process.env.port}`);
 })

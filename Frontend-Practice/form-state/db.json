@@ -1,0 +1,112 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "name": "Rahul Mishra",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Jharkhand",
+      "image": "https://wallpapercave.com/wp/wp4983041.jpg"
+    },
+    {
+      "id": 2,
+      "name": "suraj Mishra",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Jharkhand",
+      "image": "https://th.bing.com/th/id/R.32098b68ab6e147b0f6a6c9a8347140f?rik=aJ66dn2Kbr%2fOlQ&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fALsZeGU.jpg&ehk=QTJDrKmXFUMg%2bdyC%2f0fJe7Hp%2bAmQTIN4%2bvYLlLyZl2c%3d&risl=&pid=ImgRaw&r=0"
+    },
+    {
+      "id": 3,
+      "name": "sidhartha Mishra",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Jharkhand",
+      "image": "https://1.bp.blogspot.com/-J6IxPhpTTS4/TrvvncjChmI/AAAAAAAAAuw/O84xhNQwe0g/s350/222523_183990994982314_138295139551900_449436_4006012_n.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Tanmay Pathak",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Jharkhand",
+      "image": "https://th.bing.com/th/id/OIP.4ZlBXv2W-qRG8MFOrRB0JAHaE7?pid=ImgDet&rs=1"
+    },
+    {
+      "id": 5,
+      "name": "Silpa tyagi",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "femal",
+      "place": "Delhi",
+      "image": "https://th.bing.com/th/id/R.1a56a31451b40a7eb9010725e207c02a?rik=aQOyeaEBWI%2b3xw&riu=http%3a%2f%2fc1.staticflickr.com%2f9%2f8504%2f8309888683_ac55cdd8b7.jpg&ehk=p%2b5%2bW4MA%2byTRK34yH5q4KF923BOAz1I2QNf1oHUxQM0%3d&risl=&pid=ImgRaw&r=0"
+    },
+    {
+      "id": 6,
+      "name": "Ridhi gaur",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "femail",
+      "place": "Mumbai",
+      "image": "https://th.bing.com/th/id/OIP.fsjX7Cg2Q6F9mGuRx-hZAQHaE8?pid=ImgDet&rs=1"
+    },
+    {
+      "id": 7,
+      "name": "Sachin Tendulkuar",
+      "age": 35,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Mumbai",
+      "image": "https://th.bing.com/th/id/R.5c91f2a3b3342431a74ccf8747bc91f5?rik=TvTMhiK%2bQPB4vQ&riu=http%3a%2f%2f3.bp.blogspot.com%2f-_7JE4D_KspQ%2fVEXDw6FJ9MI%2fAAAAAAAAJqc%2fhLmTZ4JRlAY%2fs1600%2fSJP_3984.jpg&ehk=%2bJ5pXmkoxrW5pfWA5er09REewAl2QMquQmMczjfA9%2bI%3d&risl=&pid=ImgRaw&r=0"
+    },
+    {
+      "id": 8,
+      "name": "Soham kari",
+      "age": 28,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Chatisgar",
+      "image": "https://th.bing.com/th/id/OIP.JDitDovbMtx9CTs4s-Kt5AHaHa?pid=ImgDet&rs=1"
+    },
+    {
+      "id": 9,
+      "name": "Sonika Srivastav",
+      "age": 32,
+      "profession": "web-developer",
+      "gender": "femail",
+      "place": "Karnatak",
+      "image": "https://www.hdwallpaper.nu/wp-content/uploads/2015/07/beautiful_Wallpaper_025.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Rohan Shani",
+      "age": 43,
+      "profession": "web-developer",
+      "gender": "male",
+      "place": "Tamilnadu",
+      "image": "https://i.pinimg.com/736x/4a/bd/27/4abd27fe23a87365c9675e9e034ea0f0--baby-products-siena.jpg"
+    },
+    {
+      "name": "Muskan",
+      "age": "21",
+      "place": "Delhi",
+      "gender": "female",
+      "image": "https://funylife.in/wp-content/uploads/2023/04/58_Cute-Girl-Pic-WWW.FUNYLIFE.IN_-1-1024x1024.jpg",
+      "profession": "Actress",
+      "id": 11
+    },
+    {
+      "name": "Sir Nicholas Flammel",
+      "age": "663",
+      "place": "Tamilnadu",
+      "gender": "transgender",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgJ4t5fM8JQ0PCcTtFDwq5tPmqiEFFxvmtKA&usqp=CAU",
+      "profession": "Inventor of the Philosoper's stone",
+      "id": 12
+    }
+  ]
+}

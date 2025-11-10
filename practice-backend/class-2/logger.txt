@@ -1,0 +1,8 @@
+Client Visited /student using the method GET at function Date() { [native code] }
+Client Visited /student/add using the method POST at function Date() { [native code] }
+Client Visited /student/update using the method PATCH at function Date() { [native code] }
+Client Visited /student/delete using the method DELETE at function Date() { [native code] }
+Client Visited /teacher using the method GET at function Date() { [native code] }
+Client Visited /teacher/add using the method POST at function Date() { [native code] }
+Client Visited /teacher/update using the method PATCH at function Date() { [native code] }
+Client Visited /teacher/delete using the method DELETE at function Date() { [native code] }

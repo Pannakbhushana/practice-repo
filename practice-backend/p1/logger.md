@@ -1,0 +1,16 @@
+user has visited /user by GET at function now() { [native code] }
+user has visited /user/add by POST at function now() { [native code] }
+user has visited /user by GET at function now() { [native code] }
+user has visited /user/userId=68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user/userId/68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user/update/68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user/68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user?id=68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user?_id=68fce6adb7c112626621892b by PATCH at function now() { [native code] }
+user has visited /user by PATCH at function now() { [native code] }
+user has visited /users by GET at function now() { [native code] }
+user has visited /user by GET at function now() { [native code] }
+user has visited /user?_id=68fce6adb7c112626621892b by GET at function now() { [native code] }
+user has visited /user/delete/68fce6adb7c112626621892b by DELETE at function now() { [native code] }
+user has visited /user?_id=68fce6adb7c112626621892b by GET at function now() { [native code] }
+user has visited /user by GET at function now() { [native code] }

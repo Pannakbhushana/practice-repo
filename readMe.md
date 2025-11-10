@@ -1,0 +1,1 @@
+mongoUrl=mongodb+srv://rahul93mishra:mishrarahul@cluster0.rxkwj0c.mongodb.net/practice?retryWrites=true&w=majority&appName=Cluster0

@@ -2,14 +2,14 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const {connection} = require("./db");
-const {logger} = require("./middlewares/logger");
+// const {logger} = require("./middlewares/logger");
 const {authRoute} = require("./routes/auth.route")
 const {postRoute} = require("./routes/post.route");
 const {authMiddleware} = require("./middlewares/authMiddleware");
 
 app.use(express.json());
 app.use(cors());
-app.use(logger);
+// app.use(logger);
 app.use("/auth", authRoute);
 app.use("/post", authMiddleware, postRoute);
 

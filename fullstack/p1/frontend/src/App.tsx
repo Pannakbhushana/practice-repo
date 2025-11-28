@@ -1,10 +1,18 @@
 import './App.css'
+import Router from './router'
+import { Navbar } from './router/Navbar'
+import { Toaster } from "react-hot-toast";
 
 function App() {
 
   return (
     <>
-     <div className='flex h-screen text-2xl font-bold justify-center items-center'><p>Hello world</p></div> 
+    <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+    <Navbar/>
+    <Router/>
     </>
   )
 }

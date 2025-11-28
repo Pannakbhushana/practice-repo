@@ -64,3 +64,15 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.tab-style {
+  @apply text-xl font-bold hover:cursor-pointer hover:text-teal-700
+} 
+
+.input-style {
+  @apply border w-[80%] h-12 rounded-xl border-amber-300 bg-amber-100 px-4
+}
+
+.button-style {
+  @apply border px-8 py-2 rounded-xl bg-teal-500 text-white hover:cursor-pointer hover:bg-teal-700
+}

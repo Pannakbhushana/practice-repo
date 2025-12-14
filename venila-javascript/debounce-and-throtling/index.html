@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debounce & Throttle Practice</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <h1>Debounce & Throttle Practice Dashboard</h1>
+
+  <div class="dashboard">
+
+    <!-- Debounce Card -->
+    <div class="card">
+      <h2>Debounce</h2>
+
+      <input
+        type="text"
+        id="debounceInput"
+        placeholder="Type something..."
+      />
+
+      <div class="output">
+        <strong>Debounced Output:</strong>
+        <span id="debounceOutput">—</span>
+      </div>
+
+      <div class="hint">
+        Executes after user stops typing for 500ms
+      </div>
+    </div>
+
+    <!-- Throttle Card -->
+    <div class="card">
+      <h2>Throttle</h2>
+
+      <button id="throttleBtn">Click Rapidly</button>
+
+      <div class="output">
+        <strong>Count:</strong>
+        <span id="throttleCount">0</span>
+      </div>
+
+      <div class="hint">
+        Executes once every 1000ms
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./index.js"></script>
+</body>
+</html>

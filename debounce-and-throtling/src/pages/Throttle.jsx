@@ -1,25 +1,19 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { useThrottle } from "../custom-hook/throttle.hook";
 
 function Throttle() {
   const [count, setCount] = useState(0);
-  const lastExecuted = useRef(0);
-
-  const handleClick = () => {
-    const now = Date.now();
-
-    if (now - lastExecuted.current >= 1000) {
-      setCount((prev) => prev + 1);
-      lastExecuted.current = now;
-      console.log("Throttled click");
-    }
-  };
+  
+  const hanldleThrottle = useThrottle(()=>{
+    setCount(prev=>prev+1);
+  },1000)
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <h2 className="text-xl font-semibold mb-4">Throttle</h2>
 
       <button
-        onClick={handleClick}
+        onClick={hanldleThrottle}
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
       >
         Click Rapidly

@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDebounce } from "../custom-hook/debounce.hook";
 
 function Debounce() {
   const [input, setInput] = useState("");
   const [debouncedValue, setDebouncedValue] = useState("");
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedValue(input);
-      console.log("Debounced:", input);
-    }, 500);
+  const handleDebounce = useDebounce((val)=>{
+    setDebouncedValue(val)
+  },500)
 
-    return () => clearTimeout(timer);
-  }, [input]);
+  const handleChange = (e)=>{
+    setInput(e.target.value)
+    handleDebounce(e.target.value)
+  }
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
@@ -22,7 +23,7 @@ function Debounce() {
         placeholder="Type something..."
         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleChange}
       />
 
       <p className="mt-4 text-gray-700">

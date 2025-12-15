@@ -23,9 +23,6 @@
     debounceInput.addEventListener("input", handleDebounce);
 
 
-
-    
-
     /* -------------------- Throttle -------------------- */
 
     function throttle(fn, limit) {

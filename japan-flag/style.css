@@ -1,0 +1,23 @@
+body{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#container {
+display: flex;
+justify-content: center;
+align-items: center;
+border: 1px solid black;
+height: 200px;
+width: 400px;
+}
+
+#circle{
+border: 1px solid black;
+height: 100px;
+width: 100px;
+border-radius: 50%;
+background-color: brown;
+}

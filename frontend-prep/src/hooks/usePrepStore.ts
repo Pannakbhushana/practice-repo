@@ -1,76 +1,50 @@
 import { useState, useEffect } from "react";
-import type { Question, QuestionSet } from "../data/defaultQuestions";
-import { DEFAULT_QUESTIONS, DEFAULT_SETS } from "../data/defaultQuestions";
+import type { Question, QuestionSet } from "../types";
 
 const STORAGE_KEYS = {
-  QUESTIONS: "frontend_prep_questions_v1",
-  SETS: "frontend_prep_sets_v1",
-  THEME: "frontend_prep_theme_v1",
-  ACTIVE_SET: "frontend_prep_active_set_v1",
+  QUESTIONS: "prep_app_questions_v1",
+  SETS: "prep_app_sets_v1",
+  THEME: "prep_app_theme_v1",
+  ACTIVE_SET: "prep_app_active_set_v1",
 };
 
 export const usePrepStore = () => {
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [sets, setSets] = useState<QuestionSet[]>([]);
-  const [activeSetId, setActiveSetId] = useState<string>("all");
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState<"all" | "unrevised" | "revised">("all");
-
-  // Load initial data
-  useEffect(() => {
-    // 1. Load sets
+  const [sets, setSets] = useState<QuestionSet[]>(() => {
     const savedSets = localStorage.getItem(STORAGE_KEYS.SETS);
-    let currentSets = DEFAULT_SETS;
     if (savedSets) {
       try {
-        currentSets = JSON.parse(savedSets);
+        return JSON.parse(savedSets);
       } catch (e) {
-        console.error("Failed to parse sets from localStorage, using defaults", e);
+        console.error("Failed to parse sets from localStorage", e);
       }
-    } else {
-      localStorage.setItem(STORAGE_KEYS.SETS, JSON.stringify(DEFAULT_SETS));
     }
-    setSets(currentSets);
+    return [];
+  });
 
-    // 2. Load questions
+  const [questions, setQuestions] = useState<Question[]>(() => {
     const savedQuestions = localStorage.getItem(STORAGE_KEYS.QUESTIONS);
-    let currentQuestions = DEFAULT_QUESTIONS;
     if (savedQuestions) {
       try {
-        const parsed = JSON.parse(savedQuestions) as Question[];
-        
-        // Handle sync/merge in case new default questions were added to code but not in localstorage.
-        // We look for questions in DEFAULT_QUESTIONS that are missing in localStorage by ID
-        const parsedIds = new Set(parsed.map(q => q.id));
-        const missingDefaults = DEFAULT_QUESTIONS.filter(q => !parsedIds.has(q.id));
-        
-        if (missingDefaults.length > 0) {
-          currentQuestions = [...parsed, ...missingDefaults];
-          localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(currentQuestions));
-        } else {
-          currentQuestions = parsed;
-        }
+        return JSON.parse(savedQuestions);
       } catch (e) {
-        console.error("Failed to parse questions from localStorage, using defaults", e);
+        console.error("Failed to parse questions from localStorage", e);
       }
-    } else {
-      localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(DEFAULT_QUESTIONS));
     }
-    setQuestions(currentQuestions);
+    return [];
+  });
 
-    // 3. Load theme
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "light" | "dark" | "system";
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-
-    // 4. Load active set
+  const [activeSetId, setActiveSetId] = useState<string>(() => {
     const savedActiveSet = localStorage.getItem(STORAGE_KEYS.ACTIVE_SET);
-    if (savedActiveSet) {
-      setActiveSetId(savedActiveSet);
-    }
-  }, []);
+    return savedActiveSet || "all";
+  });
+
+  const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as "light" | "dark" | "system";
+    return savedTheme || "system";
+  });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState<"all" | "unrevised" | "revised">("all");
 
   // Sync active set to localStorage
   const handleSetActiveSetId = (id: string) => {
@@ -230,12 +204,12 @@ export const usePrepStore = () => {
     saveQuestions(updated);
   };
 
-  // 10. Reset to original default data
+  // 10. Reset to empty state (no hardcoded questions)
   const resetToDefaultData = () => {
     localStorage.removeItem(STORAGE_KEYS.QUESTIONS);
     localStorage.removeItem(STORAGE_KEYS.SETS);
-    setQuestions(DEFAULT_QUESTIONS);
-    setSets(DEFAULT_SETS);
+    setQuestions([]);
+    setSets([]);
     handleSetActiveSetId("all");
   };
 
@@ -244,7 +218,7 @@ export const usePrepStore = () => {
     const dataStr = JSON.stringify({ sets, questions }, null, 2);
     const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `frontend-prep-backup-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `prep-app-backup-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -255,24 +229,28 @@ export const usePrepStore = () => {
   // 12. Import backup JSON
   const importData = (jsonDataStr: string): { success: boolean; error?: string } => {
     try {
-      const data = JSON.parse(jsonDataStr);
+      const data = JSON.parse(jsonDataStr) as { sets?: unknown; questions?: unknown };
       if (!data.sets || !data.questions || !Array.isArray(data.sets) || !Array.isArray(data.questions)) {
         return { success: false, error: "Invalid backup format. Must contain 'sets' and 'questions' arrays." };
       }
       
       // Basic validation
-      const isValidSet = data.sets.every((s: any) => s.id && s.name);
-      const isValidQuestion = data.questions.every((q: any) => q.id && q.text && q.setId);
+      const setsArray = data.sets as Partial<QuestionSet>[];
+      const questionsArray = data.questions as Partial<Question>[];
+      
+      const isValidSet = setsArray.every((s) => s && s.id && s.name);
+      const isValidQuestion = questionsArray.every((q) => q && q.id && q.text && q.setId);
       
       if (!isValidSet || !isValidQuestion) {
         return { success: false, error: "Data integrity check failed. Some objects are missing required fields." };
       }
 
-      saveSets(data.sets);
-      saveQuestions(data.questions);
+      saveSets(setsArray as QuestionSet[]);
+      saveQuestions(questionsArray as Question[]);
       return { success: true };
-    } catch (e: any) {
-      return { success: false, error: e.message || "Failed to parse JSON file." };
+    } catch (e: unknown) {
+      const errMsg = e instanceof Error ? e.message : "Failed to parse JSON file.";
+      return { success: false, error: errMsg };
     }
   };
 

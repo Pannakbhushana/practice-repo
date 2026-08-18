@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import type { Question, QuestionSet } from "../data/defaultQuestions";
+import type { Question, QuestionSet } from "../types";
 import { Eye, EyeOff, Edit3, Trash2, Check, X, Save } from "lucide-react";
 
 interface QuestionCardProps {
@@ -21,7 +21,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   
   // Edit form states
   const [editText, setEditText] = useState(question.text);
@@ -30,20 +29,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Sync edits if question updates externally
-  useEffect(() => {
+  const handleStartEdit = () => {
     setEditText(question.text);
     setEditAnswer(question.answer);
     setEditSetId(question.setId);
-  }, [question]);
-
-  // Reset delete confirmation timer
-  useEffect(() => {
-    if (confirmDelete) {
-      const timer = setTimeout(() => setConfirmDelete(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [confirmDelete]);
+    setIsEditing(true);
+  };
 
   // Auto-resize textarea
   useEffect(() => {
@@ -67,10 +58,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const handleDelete = () => {
-    if (confirmDelete) {
+    if (window.confirm("Are you sure you want to delete this question?")) {
       onDelete(question.id);
-    } else {
-      setConfirmDelete(true);
     }
   };
 
@@ -276,7 +265,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             {/* Quick Actions (Hover visible on desktop, always visible on mobile) */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={handleStartEdit}
                 className="p-1.5 rounded-lg text-slate-400 hover:text-accent-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                 title="Edit Question & Answer"
               >
@@ -284,12 +273,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               </button>
               <button
                 onClick={handleDelete}
-                className={`p-1.5 rounded-lg transition cursor-pointer ${
-                  confirmDelete 
-                    ? "text-red-500 bg-red-50 dark:bg-red-950/30 scale-105 border border-red-200 dark:border-red-900" 
-                    : "text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-                }`}
-                title={confirmDelete ? "Click again to confirm delete" : "Delete Question"}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                title="Delete Question"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

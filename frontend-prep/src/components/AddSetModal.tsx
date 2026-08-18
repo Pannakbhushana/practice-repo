@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FolderPlus, X } from "lucide-react";
 
 interface AddSetModalProps {
@@ -16,13 +16,7 @@ export const AddSetModal: React.FC<AddSetModalProps> = ({
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setDescription("");
-      setError("");
-    }
-  }, [isOpen]);
+
 
   if (!isOpen) return null;
 

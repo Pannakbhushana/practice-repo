@@ -130,7 +130,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             </button>
 
             {importStatus.type === "success" && (
-              <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250 dark:border-emerald-900/60 rounded-xl p-3 mt-1.5">
+              <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250 dark:bg-emerald-900/60 rounded-xl p-3 mt-1.5">
                 <Check className="w-4 h-4 shrink-0" />
                 <span>{importStatus.message}</span>
               </div>
@@ -151,7 +151,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               Danger Zone
             </h4>
             <p className="text-xs text-slate-555 dark:text-slate-400">
-              Reset all questions back to their default lists. This will erase all custom question sets, custom added questions, and all edited answers. This action is permanent!
+              Erase all subject categories, questions, and answers from this device. This action is permanent and cannot be undone!
             </p>
             <button
               onClick={handleResetConfirm}
@@ -163,11 +163,11 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               `}
             >
               <RefreshCw className={`w-4 h-4 ${resetConfirmed ? "animate-spin" : ""}`} />
-              {resetConfirmed ? "Click Again to Confirm Reset" : "Reset to Default Data"}
+              {resetConfirmed ? "Click Again to Confirm Deletion" : "Clear All Database Data"}
             </button>
             {resetConfirmed && (
               <p className="text-[10px] text-red-500 dark:text-red-400 text-center font-medium mt-1">
-                Warning: This deletes all progress and custom notes!
+                Warning: This deletes all topics, questions, and progress!
               </p>
             )}
           </div>

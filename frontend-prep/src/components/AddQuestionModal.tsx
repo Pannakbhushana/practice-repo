@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import type { QuestionSet } from "../data/defaultQuestions";
+import React, { useState } from "react";
+import type { QuestionSet } from "../types";
 import { X, Plus, Sparkles } from "lucide-react";
 
 interface AddQuestionModalProps {
@@ -8,6 +8,7 @@ interface AddQuestionModalProps {
   onAdd: (text: string, answer: string, setId: string) => void;
   sets: QuestionSet[];
   activeSetId: string;
+  onOpenAddSet?: () => void;
 }
 
 export const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
@@ -16,27 +17,63 @@ export const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
   onAdd,
   sets,
   activeSetId,
+  onOpenAddSet,
 }) => {
   const [text, setText] = useState("");
   const [answer, setAnswer] = useState("");
-  const [setId, setSetId] = useState(sets[0]?.id || "javascript");
+  const [setId, setSetId] = useState(() => {
+    if (activeSetId !== "all" && sets.some(s => s.id === activeSetId)) {
+      return activeSetId;
+    }
+    return sets[0]?.id || "";
+  });
   const [error, setError] = useState("");
 
-  // Default to activeSetId when modal opens, if activeSetId is not "all"
-  useEffect(() => {
-    if (isOpen) {
-      if (activeSetId !== "all" && sets.some(s => s.id === activeSetId)) {
-        setSetId(activeSetId);
-      } else if (sets.length > 0) {
-        setSetId(sets[0].id);
-      }
-      setText("");
-      setAnswer("");
-      setError("");
-    }
-  }, [isOpen, activeSetId, sets]);
-
   if (!isOpen) return null;
+
+  if (sets.length === 0) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <div 
+          className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm transition-opacity"
+          onClick={onClose}
+        />
+        
+        {/* Modal Card */}
+        <div className="glass-panel border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md shadow-xl overflow-hidden transform transition-all z-10 p-6 flex flex-col items-center text-center animate-scaleUp">
+          <div className="w-12 h-12 rounded-full bg-brand-100 dark:bg-brand-950/50 flex items-center justify-center text-brand-500 mb-4">
+            <Plus className="w-6 h-6" />
+          </div>
+          <h3 className="text-lg font-bold font-heading text-slate-800 dark:text-slate-100 mb-2">
+            No Subject Categories Found
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+            You must create at least one subject category (like History, Science, or Tech) before you can add questions.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-semibold rounded-xl border border-slate-250 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                onClose();
+                if (onOpenAddSet) {
+                  onOpenAddSet();
+                }
+              }}
+              className="px-4 py-2 text-sm font-bold rounded-xl bg-brand-600 hover:bg-brand-700 text-white shadow-sm transition cursor-pointer"
+            >
+              Create Category
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +96,7 @@ export const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
       {/* Modal Card */}
       <div className="glass-panel border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl shadow-xl overflow-hidden transform transition-all z-10 animate-scaleUp">
         {/* Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-accent-600/10 to-brand-600/10 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between">
+        <div className="px-6 py-4 bg-gradient-to-r from-accent-600/10 to-brand-600/10 border-b border-slate-200/50 dark:border-slate-850/50 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-accent-500" />
             <h3 className="text-lg font-bold font-heading text-slate-800 dark:text-slate-100">

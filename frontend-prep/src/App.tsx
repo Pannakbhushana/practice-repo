@@ -37,10 +37,10 @@ function App() {
   const [isBackupOpen, setIsBackupOpen] = useState(false);
 
   const activeSet = store.sets.find((s) => s.id === store.activeSetId);
-  const activeSetName = store.activeSetId === "all" ? "All Topics" : activeSet?.name || "Topic";
+  const activeSetName = store.activeSetId === "all" ? "All Subjects" : activeSet?.name || "Subject";
   const activeSetDesc = store.activeSetId === "all" 
-    ? "Review all questions across all categories and topics." 
-    : activeSet?.description || "Category specific interview questions.";
+    ? "Review all questions across all subjects and categories." 
+    : activeSet?.description || "Subject-specific preparation questions.";
 
   // Calculate statistics for the active set
   const setQuestions = store.questions.filter(
@@ -102,10 +102,10 @@ function App() {
             </div>
             <div>
               <span className="font-extrabold font-heading text-lg tracking-tight bg-gradient-to-r from-accent-600 to-brand-500 bg-clip-text text-transparent">
-                FrontendPrep
+                PrepApp
               </span>
               <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
-                Interview Board
+                Revision Board
               </span>
             </div>
           </div>
@@ -143,7 +143,7 @@ function App() {
         <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-1">
           <div className="px-3 mb-2 flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              Topic Question Sets
+              Subject Categories
             </span>
             <button
               onClick={() => {
@@ -151,7 +151,7 @@ function App() {
                 setIsSidebarOpen(false);
               }}
               className="p-1 rounded-md text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 hover:text-brand-500 transition cursor-pointer"
-              title="Add new category set"
+              title="Add new subject category"
             >
               <FolderPlus className="w-4 h-4" />
             </button>
@@ -172,7 +172,7 @@ function App() {
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <Sparkles className="w-4 h-4 shrink-0" />
-              <span className="text-sm truncate">All Concepts</span>
+              <span className="text-sm truncate">All Subjects</span>
             </div>
             <span className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full border border-slate-200/50 dark:border-slate-700/50">
               {store.questions.filter(q => !q.isRevised).length}/{store.questions.length}
@@ -184,7 +184,6 @@ function App() {
             const setQuestions = store.questions.filter(q => q.setId === set.id);
             const setPending = setQuestions.filter(q => !q.isRevised).length;
             const setTotal = setQuestions.length;
-            const isCustom = set.id.startsWith("set-");
 
             return (
               <button
@@ -210,15 +209,13 @@ function App() {
                     {setPending}/{setTotal}
                   </span>
                   
-                  {isCustom && (
-                    <button
-                      onClick={(e) => handleDeleteSet(set.id, set.name, e)}
-                      className="p-1 text-slate-400 hover:text-red-500 rounded hover:bg-slate-200 dark:hover:bg-slate-800 opacity-0 group-hover/item:opacity-100 transition-opacity"
-                      title="Delete category"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                  )}
+                  <button
+                    onClick={(e) => handleDeleteSet(set.id, set.name, e)}
+                    className="p-1 text-slate-400 hover:text-red-500 rounded hover:bg-slate-200 dark:hover:bg-slate-800 opacity-0 group-hover/item:opacity-100 transition-opacity"
+                    title="Delete category"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
                 </div>
               </button>
             );
@@ -238,7 +235,7 @@ function App() {
             Backup & Reset
           </button>
           <div className="text-[10px] text-center text-slate-400 dark:text-slate-500">
-            Frontend Prep Board v1.0.0
+            PrepApp Board v1.0.0
           </div>
         </div>
       </aside>
@@ -444,7 +441,6 @@ function App() {
                 // Find index of this question in the unfiltered questions list
                 const originalIndex = store.questions.findIndex((origQ) => origQ.id === q.id) + 1;
 
-                
                 return (
                   <QuestionCard
                     key={q.id}
@@ -461,14 +457,33 @@ function App() {
               /* EMPTY STATES */
               <div className="glass-panel border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center flex flex-col items-center justify-center max-w-lg mx-auto shadow-sm">
                 
-                {/* 1. All Pending Checked Off (Empty Queue) */}
-                {store.filterType === "unrevised" && totalInSet > 0 ? (
+                {/* 1. Welcome state for new users (no categories created yet) */}
+                {store.sets.length === 0 ? (
+                  <>
+                    <div className="w-16 h-16 bg-brand-100 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-2xl flex items-center justify-center mb-4">
+                      <FolderPlus className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-bold font-heading text-slate-800 dark:text-slate-150 mb-2">
+                      Welcome to PrepApp!
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+                      Get started by creating your first subject or topic category (e.g. History, Science, or Tech).
+                    </p>
+                    <button
+                      onClick={() => setIsAddSetOpen(true)}
+                      className="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold transition shadow-md cursor-pointer"
+                    >
+                      Create Subject Category
+                    </button>
+                  </>
+                ) : store.filterType === "unrevised" && totalInSet > 0 ? (
+                  /* 2. All Pending Checked Off (Empty Queue) */
                   <>
                     <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-4">
                       <CheckCircle className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold font-heading text-slate-800 dark:text-slate-150 mb-2">
-                      Topic Mastered! 🎉
+                      Subject Mastered! 🎉
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
                       You have revised all {totalInSet} questions in <strong>{activeSetName}</strong>. Ready to test yourself again?
@@ -477,11 +492,11 @@ function App() {
                       onClick={handleResetSetProgress}
                       className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition shadow-md cursor-pointer"
                     >
-                      Reset Set Progress
+                      Reset Subject Progress
                     </button>
                   </>
                 ) : store.filterType === "revised" && totalInSet > 0 ? (
-                  /* 2. No Revised Questions Yet */
+                  /* 3. No Revised Questions Yet */
                   <>
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mb-4">
                       <HelpCircle className="w-8 h-8" />
@@ -490,7 +505,7 @@ function App() {
                       Nothing Checked Yet
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                      You haven't marked any questions as revised in this topic. Read the questions and check them off when you feel confident.
+                      You haven't marked any questions as revised in this subject. Read the questions and check them off when you feel confident.
                     </p>
                     <button
                       onClick={() => store.setFilterType("unrevised")}
@@ -500,7 +515,7 @@ function App() {
                     </button>
                   </>
                 ) : store.searchQuery ? (
-                  /* 3. Search yields no results */
+                  /* 4. Search yields no results */
                   <>
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mb-4">
                       <Search className="w-8 h-8" />
@@ -519,7 +534,7 @@ function App() {
                     </button>
                   </>
                 ) : (
-                  /* 4. Complete category empty (no questions inside it at all) */
+                  /* 5. Complete category empty (no questions inside it at all) */
                   <>
                     <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mb-4">
                       <HelpCircle className="w-8 h-8" />
@@ -528,7 +543,7 @@ function App() {
                       No Questions Yet
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                      There are currently no questions in the category <strong>{activeSetName}</strong>. Create a question to get started.
+                      There are currently no questions in the subject <strong>{activeSetName}</strong>. Create a question to get started.
                     </p>
                     <button
                       onClick={() => setIsAddQuestionOpen(true)}
@@ -545,30 +560,37 @@ function App() {
       </main>
 
       {/* 4. MODALS INTEGRATION */}
-      <AddQuestionModal
-        isOpen={isAddQuestionOpen}
-        onClose={() => setIsAddQuestionOpen(false)}
-        onAdd={store.addQuestion}
-        sets={store.sets}
-        activeSetId={store.activeSetId}
-      />
+      {isAddQuestionOpen && (
+        <AddQuestionModal
+          isOpen={isAddQuestionOpen}
+          onClose={() => setIsAddQuestionOpen(false)}
+          onAdd={store.addQuestion}
+          sets={store.sets}
+          activeSetId={store.activeSetId}
+          onOpenAddSet={() => setIsAddSetOpen(true)}
+        />
+      )}
 
-      <AddSetModal
-        isOpen={isAddSetOpen}
-        onClose={() => setIsAddSetOpen(false)}
-        onAdd={(name, desc) => {
-          const newId = store.addSet(name, desc);
-          store.setActiveSetId(newId);
-        }}
-      />
+      {isAddSetOpen && (
+        <AddSetModal
+          isOpen={isAddSetOpen}
+          onClose={() => setIsAddSetOpen(false)}
+          onAdd={(name, desc) => {
+            const newId = store.addSet(name, desc);
+            store.setActiveSetId(newId);
+          }}
+        />
+      )}
 
-      <BackupModal
-        isOpen={isBackupOpen}
-        onClose={() => setIsBackupOpen(false)}
-        onExport={store.exportData}
-        onImport={store.importData}
-        onResetAll={store.resetToDefaultData}
-      />
+      {isBackupOpen && (
+        <BackupModal
+          isOpen={isBackupOpen}
+          onClose={() => setIsBackupOpen(false)}
+          onExport={store.exportData}
+          onImport={store.importData}
+          onResetAll={store.resetToDefaultData}
+        />
+      )}
     </div>
   );
 }

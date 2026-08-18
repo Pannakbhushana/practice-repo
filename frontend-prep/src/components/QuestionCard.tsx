@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import type { Question, QuestionSet } from "../types";
 import { Eye, EyeOff, Edit3, Trash2, Check, X, Save } from "lucide-react";
+import { ConfirmModal } from "./ConfirmModal";
 
 interface QuestionCardProps {
   question: Question;
@@ -21,6 +22,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   
   // Edit form states
   const [editText, setEditText] = useState(question.text);
@@ -58,9 +60,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this question?")) {
-      onDelete(question.id);
-    }
+    setIsDeleteConfirmOpen(true);
   };
 
   // Keyboard accessibility
@@ -315,6 +315,18 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
           </div>
         </div>
+      )}
+      {isDeleteConfirmOpen && (
+        <ConfirmModal
+          isOpen={isDeleteConfirmOpen}
+          onClose={() => setIsDeleteConfirmOpen(false)}
+          onConfirm={() => onDelete(question.id)}
+          title="Delete Question"
+          message="Are you sure you want to delete this question? This action is permanent and cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          variant="danger"
+        />
       )}
     </div>
   );

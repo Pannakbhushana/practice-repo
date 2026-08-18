@@ -5,6 +5,7 @@ import { QuestionCard } from "./components/QuestionCard";
 import { AddQuestionModal } from "./components/AddQuestionModal";
 import { AddSetModal } from "./components/AddSetModal";
 import { BackupModal } from "./components/BackupModal";
+import { ConfirmModal } from "./components/ConfirmModal";
 import { 
   Plus, 
   Menu, 
@@ -22,6 +23,15 @@ import {
   HelpCircle
 } from "lucide-react";
 
+interface ConfirmConfig {
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  variant?: "danger" | "warning" | "info";
+  onConfirm: () => void;
+}
+
 function App() {
   const store = usePrepStore();
   
@@ -35,6 +45,9 @@ function App() {
   const [isAddQuestionOpen, setIsAddQuestionOpen] = useState(false);
   const [isAddSetOpen, setIsAddSetOpen] = useState(false);
   const [isBackupOpen, setIsBackupOpen] = useState(false);
+
+  // Custom confirmation modal state
+  const [confirmConfig, setConfirmConfig] = useState<ConfirmConfig | null>(null);
 
   const activeSet = store.sets.find((s) => s.id === store.activeSetId);
   const activeSetName = store.activeSetId === "all" ? "All Subjects" : activeSet?.name || "Subject";
@@ -53,32 +66,48 @@ function App() {
   // Handle set deletion
   const handleDeleteSet = (setId: string, name: string, e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent selecting the set
-    if (window.confirm(`Are you sure you want to delete the category "${name}"? This will also delete all its questions!`)) {
-      store.deleteSet(setId);
-    }
+    setConfirmConfig({
+      title: "Delete Category",
+      message: `Are you sure you want to delete the category "${name}"? This will also delete all its questions!`,
+      confirmText: "Delete",
+      variant: "danger",
+      onConfirm: () => store.deleteSet(setId),
+    });
   };
 
   // Bulk actions
   const handleResetSetProgress = () => {
-    if (window.confirm(`Restore all completed questions in "${activeSetName}" back to the revision queue?`)) {
-      store.resetSetQuestions(store.activeSetId);
-    }
+    setConfirmConfig({
+      title: "Reset Progress",
+      message: `Restore all completed questions in "${activeSetName}" back to the revision queue?`,
+      confirmText: "Reset",
+      variant: "warning",
+      onConfirm: () => store.resetSetQuestions(store.activeSetId),
+    });
   };
 
   const handleMarkAllAsDone = () => {
     const pendingIds = store.filteredQuestions.filter(q => !q.isRevised).map(q => q.id);
     if (pendingIds.length === 0) return;
-    if (window.confirm(`Mark all ${pendingIds.length} pending questions in this view as revised?`)) {
-      store.markQuestionsAsRevised(pendingIds);
-    }
+    setConfirmConfig({
+      title: "Mark All Revised",
+      message: `Mark all ${pendingIds.length} pending questions in this view as revised?`,
+      confirmText: "Mark Revised",
+      variant: "info",
+      onConfirm: () => store.markQuestionsAsRevised(pendingIds),
+    });
   };
 
   const handleRestoreAllDone = () => {
     const revisedIds = store.filteredQuestions.filter(q => q.isRevised).map(q => q.id);
     if (revisedIds.length === 0) return;
-    if (window.confirm(`Add all ${revisedIds.length} completed questions back to your revision queue?`)) {
-      store.restoreQuestions(revisedIds);
-    }
+    setConfirmConfig({
+      title: "Restore All to Queue",
+      message: `Add all ${revisedIds.length} completed questions back to your revision queue?`,
+      confirmText: "Restore",
+      variant: "info",
+      onConfirm: () => store.restoreQuestions(revisedIds),
+    });
   };
 
   return (
@@ -589,6 +618,19 @@ function App() {
           onExport={store.exportData}
           onImport={store.importData}
           onResetAll={store.resetToDefaultData}
+        />
+      )}
+
+      {confirmConfig && (
+        <ConfirmModal
+          isOpen={!!confirmConfig}
+          onClose={() => setConfirmConfig(null)}
+          onConfirm={confirmConfig.onConfirm}
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          confirmText={confirmConfig.confirmText}
+          cancelText={confirmConfig.cancelText}
+          variant={confirmConfig.variant}
         />
       )}
     </div>
